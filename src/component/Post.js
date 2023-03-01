@@ -36,6 +36,7 @@ function Post({ Id, question, image, timestamp, quoraUser }) {
   const [answer, setAnswer] = useState("");
   const [getAnswers, setGetAnswers] = useState([]);
 
+  //➡️➡️ The useEffect hook is used to fetch answers to the question using the onSnapshot method of the query object. This method listens for real-time updates to the data in the Firebase database and updates the state of the getAnswers array accordingly. The hook returns a cleanup function that unsubscribes from the listener when the component is unmounted.
   useEffect(() => {
     if (questionId) {
       const q = query(
@@ -55,6 +56,7 @@ function Post({ Id, question, image, timestamp, quoraUser }) {
     }
   }, [questionId]);
 
+  //➡️➡️ The handleAnswer function is an event handler that is triggered when the user submits an answer to the question. It uses the addDoc method to add the answer to the answer subcollection of the question in the Firebase database. It also updates the local state to clear the answer input and close the answer modal.
   const handleAnswer = async (e) => {
     e.preventDefault();
 
@@ -79,6 +81,9 @@ function Post({ Id, question, image, timestamp, quoraUser }) {
   };
 
   return (
+    /* ➡️➡️ When this div element is clicked, it triggers an onClick event that dispatches an action using the Redux library. The action being dispatched is called "setQuestionInfo", which is a function that takes an object with two properties: "questionId" and "questionName".
+These two properties are passed as arguments to the "setQuestionInfo" function, and their values are assigned based on the variables "Id" and "question", respectively.
+The purpose of this code is to handle user interaction with a particular post element and set the information related to the post, such as its ID and name, in the Redux store for later use. */
     <div
       className="post"
       onClick={() =>

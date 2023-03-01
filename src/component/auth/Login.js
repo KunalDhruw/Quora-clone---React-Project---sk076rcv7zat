@@ -12,15 +12,17 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-   const signIn = async () => {
-     try {
-       await signInWithPopup(auth, provider);
-       console.log(auth.currentUser);
-     } catch (e) {
-       alert(e.message);
-     }
-   };
+  //➡️➡️ The signIn function uses signInWithPopup function from Firebase authentication to sign in the user using a popup window. It logs the current user to the console and displays an alert message if an error occurs.
+  const signIn = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      console.log(auth.currentUser);
+    } catch (e) {
+      alert(e.message);
+    }
+  };
 
+  //➡️➡️ The handleSignIn function is used to handle the user's sign-in request. When the user submits the login form, this function is called, which prevents the default behavior of the form submission. It uses the signInWithEmailAndPassword function from Firebase authentication to sign in the user with the provided email and password. It logs the auth object to the console if the authentication is successful, or displays an alert message if an error occurs.
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
@@ -33,6 +35,7 @@ function Login() {
     setPassword("");
   };
 
+  //➡️➡️ The registerSignIn function handles the user registration process. It is called when the user submits the registration form, which prevents the default behavior of the form submission. It uses the createUserWithEmailAndPassword function from Firebase authentication to create a new user account with the provided email and password. If the authentication is successful, it logs the auth object to the console. If an error occurs, it displays an alert message.D
   const registerSignIn = async (e) => {
     e.preventDefault();
     try {

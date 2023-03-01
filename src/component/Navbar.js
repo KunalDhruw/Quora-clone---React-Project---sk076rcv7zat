@@ -17,6 +17,7 @@ import PeopleAltOutlined from "@mui/icons-material/PeopleAltOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddLinkIcon from "@mui/icons-material/AddLink";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { Menu, MenuItem } from "@mui/material";
 
 Modal.setAppElement("#root");
 
@@ -25,7 +26,17 @@ function Navbar() {
   const [IsmodalOpen, setIsModalOpen] = useState(false);
   const [input, setInput] = useState("");
   const [inputUrl, setInputUrl] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleLanguageMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleLanguageMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  //➡️➡️ The handleQuestion function is called when the user clicks on the "Add Question" button. It calls the addQuestion function to add the new question to the database. It also resets the input and inputUrl states to empty strings and closes the modal.
   const handleQuestion = (e) => {
     e.preventDefault();
     setIsModalOpen(false);
@@ -33,7 +44,10 @@ function Navbar() {
     setInput("");
     setInputUrl("");
   };
+  
   const questionsCollectionRef = collection(db, "questions");
+
+  //➡️➡️ The addQuestion function in the code uses Firebase's Firestore database to add a new question to the "questions" collection.
   const addQuestion = async (input, user, inputUrl) => {
     try {
       const docRef = await addDoc(questionsCollectionRef, {
@@ -47,7 +61,6 @@ function Navbar() {
       console.error("Error adding question: ", e);
     }
   };
-
 
   return (
     <div className="qHeader">
@@ -81,12 +94,22 @@ function Navbar() {
       <div className="qHeader__Rem">
         <div className="qHeader__avatar">
           <Avatar
+            //➡️➡️ The signOut function is called when the user clicks on their avatar. It signs the user out of the app using Firebase's authentication service.
             onClick={() => auth.signOut()}
             src={user.photo}
             imgProps={{ referrerPolicy: "no-referrer" }}
           />
         </div>
-        <LanguageIcon />
+        <LanguageIcon onClick={handleLanguageMenuClick} />
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleLanguageMenuClose}
+        >
+          <MenuItem onClick={handleLanguageMenuClose}>English</MenuItem>
+          <MenuItem onClick={handleLanguageMenuClose}>Spanish</MenuItem>
+          <MenuItem onClick={handleLanguageMenuClose}>French</MenuItem>
+        </Menu>
         <Button onClick={() => setIsModalOpen(true)}>Add Question</Button>
         <Modal
           isOpen={IsmodalOpen}
