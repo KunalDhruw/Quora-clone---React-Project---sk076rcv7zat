@@ -21,6 +21,7 @@ import {
   data,
   addDoc,
   serverTimestamp,
+  deleteDoc,
 } from "firebase/firestore";
 import { selectUser } from "../features/userSlice";
 import { selectQuestionId, setQuestionInfo } from "../features/questionSlice";
@@ -35,6 +36,17 @@ function Post({ Id, question, image, timestamp, quoraUser }) {
   const questionId = useSelector(selectQuestionId);
   const [answer, setAnswer] = useState("");
   const [getAnswers, setGetAnswers] = useState([]);
+
+  //➡️➡️ Function to delete the post according to the question id
+  const deletedoc = async () => {
+    try {
+      await deleteDoc(doc(collection(db, "questions"), Id))
+      console.log("Post Deleted.")
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
 
   //➡️➡️ The useEffect hook is used to fetch answers to the question using the onSnapshot method of the query object. This method listens for real-time updates to the data in the Firebase database and updates the state of the getAnswers array accordingly. The hook returns a cleanup function that unsubscribes from the listener when the component is unmounted.
   useEffect(() => {
@@ -118,6 +130,9 @@ The purpose of this code is to handle user interaction with a particular post el
           >
             Answer
           </button>
+          <div className="post__delete">
+            <button onClick={deletedoc}>Delete</button>
+          </div>
           <Modal
             isOpen={IsmodalOpen}
             onRequestClose={() => setIsModalOpen(false)}
